@@ -30,6 +30,7 @@ textarea {
   padding: 0;
   margin-left: 1rem;
   color: #0d0d0d;
+  font-size: 20px;
   min-height: clac(100vh - 2rem);
   border: none;
   outline: none;
