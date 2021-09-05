@@ -1,30 +1,27 @@
-if (process.env.NODE_ENV !== 'production') {
-    require('dotenv').toString()
-}
-
 const express = require('express')
-const app = express()
-// const expressLayouts = require('express-ejs-layouts')
+const app = express();
+const PORT = process.env.PORT || 3000;
 
 app.set('view engine', 'ejs')
-// app.set('views', __dirname + '/views')
-// app.set('layout', 'layouts/layout')
-// app.use(expressLayouts)
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
 
 const Document = require("./models/Document")
 const mongoose = require('mongoose')
+const CONNECTION_URI = process.env.MONGODB_URI || 'mongodb://localhost/nik_bin';
 
 // process.env.DATABASE_URL
-mongoose.connect("mongodb://localhost/nik_bin", {
+mongoose.connect(CONNECTION_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 })
-
-const db = mongoose.connection
-db.on('error', error => console.error(error))
-db.once('open', () => console.log('Connected To Mongoose'))
+    .then(() => {
+        console.log('Connected To MongoDb');
+    })
+    .catch(err => console.log(err));
+// const db = mongoose.connection
+// db.on('error', error => console.error(error))
+// db.once('open', () => console.log('Connected To Mongoose'))
 
 app.get('/', (req, res) => {
 
@@ -68,4 +65,6 @@ app.get('/:id', async (req, res) => {
     }
 })
 // app.listen(3000)
-app.listen(process.env.PORT || 3000)
+app.listen(PORT, () => {
+    console.log(`Server is listening on PORT ${PORT}`);
+})
